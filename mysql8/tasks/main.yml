@@ -14,3 +14,11 @@
   dnf:
     name: python3-PyMySQL
     state: present
+ - name: Setting root password
+   mysql_user:
+     login_host: 'localhost'
+     login_user: 'root'
+     login_password: ''
+     name: 'root'
+     password: '{{ mysql_root_password }}
+     state: present
