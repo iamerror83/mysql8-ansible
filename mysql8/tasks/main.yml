@@ -14,11 +14,11 @@
   dnf:
     name: python3-PyMySQL
     state: present
-- name: Setting root password
-  mysql_user:
-    login_host: 'localhost'
-    login_user: 'root'
-    login_password: ''
-    name: 'root'
-    password: '{{ mysql_root_password }}
-    state: present
+- name: Stop MySQL
+  service: name=mysql state=stopped
+- name: set environment variables
+  shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables"
+- name: Start MySQL
+  service: name=mysql state=started
+- name: sql query
+  command:  mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '"{{ mysql_root_password }}"';"
