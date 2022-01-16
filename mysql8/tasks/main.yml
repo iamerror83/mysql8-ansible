@@ -15,7 +15,7 @@
     name: python3-PyMySQL
     state: present
 - name: Stop MySQL
-  service: name=mysql state=stopped
+  service: name=mysqld state=stopped
 - name: set environment variables
   shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables"
 - name: Start MySQL
