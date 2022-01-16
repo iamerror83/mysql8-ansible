@@ -24,8 +24,6 @@
   command:  mysql -u root --execute="FLUSH PRIVILEGES"
 - name: Setting Password
   command:  mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '"{{ mysql_root_password }}"';"
-- name: Flushing Privileges
-  command:  mysql -u root --execute="FLUSH PRIVILEGES"
 - name: Stop MySQL-Part 2
   service: name=mysqld state=stopped
 - name: Clean up environment variables
