@@ -14,11 +14,19 @@
   dnf:
     name: python3-PyMySQL
     state: present
-- name: Stop MySQL
+- name: Stop MySQL-Part 1
   service: name=mysqld state=stopped
 - name: set environment variables
   shell: systemctl set-environment MYSQLD_OPTS="--skip-grant-tables"
-- name: Start MySQL
-  service: name=mysql state=started
-- name: sql query
+- name: Start MySQL in maintenance mode
+  service: name=mysqld state=started
+- name: Setting Password
   command:  mysql -u root --execute="ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '"{{ mysql_root_password }}"';"
+- name: Flushing Privileges
+  command:  mysql -u root --execute="FLUSH PRIVILEGES"
+- name: Stop MySQL-Part 2
+  service: name=mysqld state=stopped
+- name: Clean up environment variables
+  shell: systemctl unset-environment MYSQLD_OPTS
+- name: Starting MySQL
+  service: name=mysqld state=started
