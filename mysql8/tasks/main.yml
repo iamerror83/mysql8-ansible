@@ -6,6 +6,11 @@
     state: latest
     update_cache: true
 - name: Enabling MySQL at boot
-  shell: systemctl enable mysqld
-- name: Starting MySQL
-  shell: systemctl start mysqld
+  service:
+    name: mysqld
+    state: started
+    enabled: True
+- name: Install Python3-PyMySQL Library
+  dnf:
+    name: python3-PyMySQL
+    state: present
